@@ -102,6 +102,9 @@ export default (styleNameValue: string, styleModuleImportMap: StyleModuleImportM
           // eslint-disable-next-line no-console
           console.warn('Could not resolve the styleName \'' + styleName + '\'.');
         }
+        if (handleMissingStyleName === 'through') {
+          return styleName;
+        }
       }
 
       return styleModuleMap[styleName];
