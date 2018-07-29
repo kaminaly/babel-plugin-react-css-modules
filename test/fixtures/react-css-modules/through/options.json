@@ -1,0 +1,22 @@
+{
+  "plugins": [
+    [
+      "../../../../src",
+      {
+        "generateScopedName": "[name]__[local]",
+
+        "handleMissingStyleName": "through_log",
+        "attributeNames": {
+          "className": "className"
+        },
+        "filetypes": {
+          ".css": {
+            "plugins": [
+              "postcss-nested"
+            ]
+          }
+        }
+      }
+    ]
+  ]
+}
