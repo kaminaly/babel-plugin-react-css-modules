@@ -35,8 +35,13 @@ export default (
 
   if (destinationAttribute) {
     if (isStringLiteral(destinationAttribute.value)) {
-      destinationAttribute.value.value += ' ' + resolvedStyleName;
+      if(sourceAttribute.name.name !== destinationName) {
+        destinationAttribute.value.value += ' ' + resolvedStyleName;
+      } else {
+        destinationAttribute.value.value = resolvedStyleName;
+      }
     } else if (isJSXExpressionContainer(destinationAttribute.value)) {
+      // TODO sourceAttribute.name.name !== destinationName ?
       destinationAttribute.value.expression = conditionalClassMerge(
         destinationAttribute.value.expression,
         stringLiteral(resolvedStyleName)
@@ -45,7 +50,8 @@ export default (
       throw new Error('Unexpected attribute value:' + destinationAttribute.value);
     }
 
-    path.node.openingElement.attributes.splice(path.node.openingElement.attributes.indexOf(sourceAttribute), 1);
+    if(sourceAttribute.name.name !== destinationName)
+      path.node.openingElement.attributes.splice(path.node.openingElement.attributes.indexOf(sourceAttribute), 1);
   } else {
     sourceAttribute.name.name = destinationName;
     sourceAttribute.value.value = resolvedStyleName;
