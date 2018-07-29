@@ -32,6 +32,9 @@ const getClassNameForNamespacedStyleName = (
     } else if (handleMissingStyleName === 'warn') {
       // eslint-disable-next-line no-console
       console.warn('Invalid style name: ' + styleName);
+    } else if (handleMissingStyleName.indexOf('through') !== -1) {
+      if (handleMissingStyleName.indexOf('log') !== -1) console.log('Invalid style name: ' + styleName + '. But it was through.');
+      return styleName;
     } else {
       return null;
     }
@@ -43,6 +46,9 @@ const getClassNameForNamespacedStyleName = (
     } else if (handleMissingStyleName === 'warn') {
       // eslint-disable-next-line no-console
       console.warn('CSS module import does not exist: ' + importName);
+    } else if (handleMissingStyleName.indexOf('through') !== -1) {
+      if (handleMissingStyleName.indexOf('log') !== -1) console.log('CSS module import does not exist: ' + importName + '. But \'' + styleName + '\' was through.');
+      return styleName;
     } else {
       return null;
     }
@@ -54,6 +60,9 @@ const getClassNameForNamespacedStyleName = (
     } else if (handleMissingStyleName === 'warn') {
       // eslint-disable-next-line no-console
       console.warn('CSS module does not exist: ' + moduleName);
+    } else if (handleMissingStyleName.indexOf('through') !== -1) {
+      if (handleMissingStyleName.indexOf('log') !== -1) console.log('CSS module does not exist: ' + moduleName + '. But it was through.');
+      return moduleName;
     } else {
       return null;
     }
@@ -102,9 +111,11 @@ export default (styleNameValue: string, styleModuleImportMap: StyleModuleImportM
           // eslint-disable-next-line no-console
           console.warn('Could not resolve the styleName \'' + styleName + '\'.');
         }
-        if (handleMissingStyleName === 'through') {
+        if (handleMissingStyleName.indexOf('through') !== -1) {
+          if (handleMissingStyleName.indexOf('log') !== -1) console.log('the styleName \'' + styleName + '\' was through into className.');
           return styleName;
         }
+
       }
 
       return styleModuleMap[styleName];
