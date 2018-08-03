@@ -37,7 +37,9 @@ export default (
     });
 
   if (destinationAttribute) {
-    path.node.openingElement.attributes.splice(path.node.openingElement.attributes.indexOf(destinationAttribute), 1);
+    if(sourceAttribute.name.name !== destinationName) {
+      path.node.openingElement.attributes.splice(path.node.openingElement.attributes.indexOf(destinationAttribute), 1);
+    }
   }
 
   path.node.openingElement.attributes.splice(path.node.openingElement.attributes.indexOf(sourceAttribute), 1);
@@ -60,26 +62,40 @@ export default (
 
   if (destinationAttribute) {
     if (isStringLiteral(destinationAttribute.value)) {
-      path.node.openingElement.attributes.push(jSXAttribute(
-        jSXIdentifier(destinationName),
-        jSXExpressionContainer(
-          binaryExpression(
-            '+',
-            t.stringLiteral(destinationAttribute.value.value + ' '),
-            styleNameExpression
+      if(sourceAttribute.name.name !== destinationName) {
+        path.node.openingElement.attributes.push(jSXAttribute(
+          jSXIdentifier(destinationName),
+          jSXExpressionContainer(
+            binaryExpression(
+              '+',
+              t.stringLiteral(destinationAttribute.value.value + ' '),
+              styleNameExpression
+            )
           )
-        )
-      ));
+        ));
+      } else {
+        path.node.openingElement.attributes.push(jSXAttribute(
+          jSXIdentifier(destinationName),
+          jSXExpressionContainer(styleNameExpression)
+        ));
+      }
     } else if (isJSXExpressionContainer(destinationAttribute.value)) {
-      path.node.openingElement.attributes.push(jSXAttribute(
-        jSXIdentifier(destinationName),
-        jSXExpressionContainer(
-          conditionalClassMerge(
-            destinationAttribute.value.expression,
-            styleNameExpression
+      if(sourceAttribute.name.name !== destinationName) {
+        path.node.openingElement.attributes.push(jSXAttribute(
+          jSXIdentifier(destinationName),
+          jSXExpressionContainer(
+            conditionalClassMerge(
+              destinationAttribute.value.expression,
+              styleNameExpression
+            )
           )
-        )
-      ));
+        ));
+      } else {
+        path.node.openingElement.attributes.push(jSXAttribute(
+          jSXIdentifier(destinationName),
+          jSXExpressionContainer(styleNameExpression)
+        ));
+      }
     } else {
       throw new Error('Unexpected attribute value: ' + destinationAttribute.value);
     }

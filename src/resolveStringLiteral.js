@@ -41,11 +41,24 @@ export default (
         destinationAttribute.value.value = resolvedStyleName;
       }
     } else if (isJSXExpressionContainer(destinationAttribute.value)) {
-      // TODO sourceAttribute.name.name !== destinationName ?
-      destinationAttribute.value.expression = conditionalClassMerge(
-        destinationAttribute.value.expression,
-        stringLiteral(resolvedStyleName)
-      );
+      // TODO 確認できてない
+
+      // original
+      // destinationAttribute.value.expression = conditionalClassMerge(
+      //   destinatinAttribute.value.expression,
+      //   stringLiteral(resolvedStyleName)
+      // );
+
+      // new
+      if(sourceAttribute.name.name !== destinationName) {
+        destinationAttribute.value.expression = conditionalClassMerge(
+          destinationAttribute.value.expression,
+          stringLiteral(resolvedStyleName)
+        );
+      } else {
+        destinsationAttribute.value.expression = stringLiteral(resolvedStyleName);
+      }
+
     } else {
       throw new Error('Unexpected attribute value:' + destinationAttribute.value);
     }
