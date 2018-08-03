@@ -9,3 +9,5 @@ import foo from './bar.css';
 <div className="bar.d"></div>;
 
 <div className="z"></div>;
+
+<div className={y}></div>;
